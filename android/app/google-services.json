@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "465810426910",
+    "project_id": "connecticus-app",
+    "storage_bucket": "connecticus-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465810426910:android:a7d8f35436a7769fe1320f",
+        "android_client_info": {
+          "package_name": "com.samuelsonokoi.connecticus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465810426910-ni30obi8sa2rgssb1oa0fkvkofrkfmld.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.samuelsonokoi.connecticus",
+            "certificate_hash": "0ee6d445ba8eec6249c0d16694f4141459c0431b"
+          }
+        },
+        {
+          "client_id": "465810426910-p2bglop8ulhcqvji6ggrstdl75j3vgb5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrWT0x7j2FppJekasnGy6JL-ccEXT4wAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465810426910-p2bglop8ulhcqvji6ggrstdl75j3vgb5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "465810426910-aqjhmpqof5j4tjia7kufbcpop0l3ocg3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.samuelsonokoi.connecticus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
