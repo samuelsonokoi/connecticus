@@ -1,3 +1,4 @@
+import 'package:connecticus/widgets/header.dart';
 import 'package:flutter/material.dart';
 
 class Upload extends StatefulWidget {
@@ -10,8 +11,11 @@ class Upload extends StatefulWidget {
 class _UploadState extends State<Upload> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
+    return Scaffold(
+      appBar: header(context, title: 'Upload'),
+      body: Center(
+        child: Text('Upload Screen'),
+      ),
     );
   }
 }

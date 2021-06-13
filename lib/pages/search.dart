@@ -1,3 +1,4 @@
+import 'package:connecticus/widgets/header.dart';
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
@@ -10,8 +11,11 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
+    return Scaffold(
+      appBar: header(context, title: 'Search'),
+      body: Center(
+        child: Text('Search Screen'),
+      ),
     );
   }
 }

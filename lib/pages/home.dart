@@ -1,8 +1,10 @@
+import 'package:connecticus/models/utils.dart';
 import 'package:connecticus/pages/activity_feed.dart';
 import 'package:connecticus/pages/profile.dart';
 import 'package:connecticus/pages/search.dart';
 import 'package:connecticus/pages/timeline.dart';
 import 'package:connecticus/pages/upload.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -18,6 +20,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isAuth = false;
+  PageController? pageController;
+  int pageIndex = 0;
 
   login() {
     googleSignIn.signIn();
@@ -27,9 +31,28 @@ class _HomeState extends State<Home> {
     googleSignIn.signOut();
   }
 
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTapped(int pageIndex) {
+    pageController!.animateToPage(
+      pageIndex,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // initialize page controller
+    pageController = PageController();
+
+    // listen current changes
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
     }, onError: (err) {
@@ -43,6 +66,12 @@ class _HomeState extends State<Home> {
         .catchError((err) {
       print('Error signing in: $err');
     });
+  }
+
+  @override
+  void dispose() {
+    pageController!.dispose();
+    super.dispose();
   }
 
   void handleSignIn(GoogleSignInAccount? account) {
@@ -68,30 +97,36 @@ class _HomeState extends State<Home> {
           Search(),
           Profile(),
         ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        currentIndex: pageIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.whatshot),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_active),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.photo_camera,
+              size: 45.0,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+          ),
+        ],
+        onTap: onTapped,
+        activeColor: Theme.of(context).primaryColor,
       ),
     );
-    // return Scaffold(
-    //   body: SafeArea(
-    //     child: Container(
-    //       child: Center(
-    //         child: MaterialButton(
-    //           onPressed: logOut,
-    //           hoverColor: Theme.of(context).accentColor,
-    //           color: Colors.orangeAccent[400],
-    //           elevation: 8.0,
-    //           child: Text(
-    //             'Log Out',
-    //             style: TextStyle(
-    //               color: Colors.white,
-    //               fontSize: 25,
-    //               fontFamily: 'Nunito',
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget buildUnAuthScreen() {
@@ -113,7 +148,7 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Connecticus-Ng',
+              getAppName(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 45,

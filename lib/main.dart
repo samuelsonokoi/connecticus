@@ -1,3 +1,4 @@
+import 'package:connecticus/models/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/home.dart';
@@ -17,11 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Connecticus-Ng',
+      title: getAppName(),
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        primaryColor: Colors.orange,
         brightness: Brightness.dark,
       ),
       home: Home(),

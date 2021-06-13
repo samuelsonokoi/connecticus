@@ -1,3 +1,4 @@
+import 'package:connecticus/widgets/header.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -10,8 +11,11 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
+    return Scaffold(
+      appBar: header(context, title: 'Profile'),
+      body: Center(
+        child: Text('Profile Page'),
+      ),
     );
   }
 }
