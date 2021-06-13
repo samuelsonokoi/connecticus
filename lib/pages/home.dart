@@ -1,3 +1,8 @@
+import 'package:connecticus/pages/activity_feed.dart';
+import 'package:connecticus/pages/profile.dart';
+import 'package:connecticus/pages/search.dart';
+import 'package:connecticus/pages/timeline.dart';
+import 'package:connecticus/pages/upload.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -18,40 +23,75 @@ class _HomeState extends State<Home> {
     googleSignIn.signIn();
   }
 
+  logOut() {
+    googleSignIn.signOut();
+  }
+
   @override
   void initState() {
     super.initState();
     googleSignIn.onCurrentUserChanged.listen((account) {
-      if (account != null) {
-        print('User signed in: $account');
-        setState(() {
-          isAuth = true;
-        });
-      } else {
-        setState(() {
-          isAuth = false;
-        });
-      }
+      handleSignIn(account);
+    }, onError: (err) {
+      print('Error signing in: $err');
     });
+
+    // check and log the user in when the app is oppened.
+    googleSignIn
+        .signInSilently(suppressErrors: false)
+        .then((account) => handleSignIn(account))
+        .catchError((err) {
+      print('Error signing in: $err');
+    });
+  }
+
+  void handleSignIn(GoogleSignInAccount? account) {
+    if (account != null) {
+      print('User signed in: $account');
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      setState(() {
+        isAuth = false;
+      });
+    }
   }
 
   Widget buildAuthScreen() {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: Center(
-            child: Text(
-              'Authorized',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 30,
-                fontFamily: 'Nunito',
-              ),
-            ),
-          ),
-        ),
+      body: PageView(
+        children: [
+          Timeline(),
+          ActivityFeed(),
+          Upload(),
+          Search(),
+          Profile(),
+        ],
       ),
     );
+    // return Scaffold(
+    //   body: SafeArea(
+    //     child: Container(
+    //       child: Center(
+    //         child: MaterialButton(
+    //           onPressed: logOut,
+    //           hoverColor: Theme.of(context).accentColor,
+    //           color: Colors.orangeAccent[400],
+    //           elevation: 8.0,
+    //           child: Text(
+    //             'Log Out',
+    //             style: TextStyle(
+    //               color: Colors.white,
+    //               fontSize: 25,
+    //               fontFamily: 'Nunito',
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget buildUnAuthScreen() {
@@ -62,8 +102,8 @@ class _HomeState extends State<Home> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Theme.of(context).primaryColor.withOpacity(0.8),
               Theme.of(context).accentColor,
+              Theme.of(context).primaryColor,
             ],
           ),
         ),
@@ -75,10 +115,11 @@ class _HomeState extends State<Home> {
             Text(
               'Connecticus-Ng',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 45,
-                  fontFamily: 'Nunito',
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 45,
+                fontFamily: 'Nunito',
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(
               height: 20,
