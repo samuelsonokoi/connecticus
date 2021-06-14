@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connecticus/models/utils.dart';
 import 'package:connecticus/pages/activity_feed.dart';
+import 'package:connecticus/pages/create_account.dart';
 import 'package:connecticus/pages/profile.dart';
 import 'package:connecticus/pages/search.dart';
 import 'package:connecticus/pages/timeline.dart';
@@ -76,7 +78,7 @@ class _HomeState extends State<Home> {
 
   void handleSignIn(GoogleSignInAccount? account) {
     if (account != null) {
-      print('User signed in: $account');
+      createUserInFirestore();
       setState(() {
         isAuth = true;
       });
@@ -87,11 +89,67 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // create user
+  createUserInFirestore() async {
+    // set user id
+    final user = googleSignIn.currentUser;
+    // get the user document based on the id
+    DocumentSnapshot data = await userRef.doc(user!.id).get();
+
+    // check if the document exist and create it if it doesn't
+    if (data.exists) {
+    } else {
+      // wait for navigator to return with the user's username
+      final username = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => CreateAccount(),
+          ));
+      //
+      userRef.doc(user.id).set({
+        'email': user.email,
+        'photoUrl': user.photoUrl,
+        'id': user.id,
+        'displayName': user.displayName,
+        'username': username,
+        'postCount': 0,
+        'isAdmin': false,
+        'bio': '',
+        'createAt': DateTime.now(),
+      }).then((value) => print('user saved!'));
+    }
+  }
+
   Widget buildAuthScreen() {
     return Scaffold(
       body: PageView(
         children: [
-          Timeline(),
+          // Timeline(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Sign Out",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: logOut,
+                child: Container(
+                  width: 260,
+                  height: 60,
+                ),
+              ),
+            ],
+          ),
           ActivityFeed(),
           Upload(),
           Search(),
@@ -105,10 +163,10 @@ class _HomeState extends State<Home> {
         currentIndex: pageIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.whatshot),
+            icon: Icon(Icons.home_rounded),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active),
+            icon: Icon(Icons.chat_rounded),
           ),
           BottomNavigationBarItem(
             icon: Icon(

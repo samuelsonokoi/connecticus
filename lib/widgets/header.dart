@@ -7,7 +7,7 @@ AppBar header(context, {bool isAppTitle = false, String title = ''}) {
       isAppTitle ? getAppName() : title,
       style: TextStyle(
         color: Colors.white,
-        fontSize: isAppTitle ? 30 : 22,
+        fontSize: isAppTitle ? 30 : 25,
         fontFamily: 'Nunito',
       ),
     ),
