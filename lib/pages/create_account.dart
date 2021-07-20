@@ -22,7 +22,7 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, title: 'Set up profile'),
+      appBar: header(context, title: 'Set up your profile'),
       body: ListView(
         children: [
           Padding(
@@ -72,6 +72,7 @@ class _CreateAccountState extends State<CreateAccount> {
             child: GestureDetector(
               onTap: submit,
               child: Container(
+                width: MediaQuery.of(context).size.width / 5,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(5),
@@ -82,9 +83,10 @@ class _CreateAccountState extends State<CreateAccount> {
                     'Save',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 25,
-                        fontFamily: getFontName(),
-                        color: Colors.white),
+                      fontSize: 25,
+                      fontFamily: getFontName(),
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

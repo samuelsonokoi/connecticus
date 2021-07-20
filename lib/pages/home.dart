@@ -39,6 +39,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // Animate controller
   onTapped(int pageIndex) {
     pageController!.animateToPage(
       pageIndex,
